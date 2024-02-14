@@ -7,7 +7,7 @@ fun OwnerDto.toDomain(): OwnerDomainModel {
     return OwnerDomainModel(
         firstName = firstName,
         lastName = lastName,
-        profile = profile,
+        profile = profile ?: "",
         postDate = postDate,
     )
 }

@@ -8,7 +8,7 @@ fun PostDto.toDomain(): PostDomainModel {
         id = id,
         comments = comments,
         title = title,
-        images = images,
+        images = images?: emptyList(),
         likes = likes,
         shareContent = shareContent,
         owner = owner.toDomain()

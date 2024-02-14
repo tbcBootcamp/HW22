@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 
 data class PostDto(
     val id: Int,
-    val images: List<String>,
+    val images: List<String>?,
     val title: String,
     val comments: Int,
     val likes: Int,

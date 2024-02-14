@@ -7,7 +7,7 @@ data class OwnerDto(
     val firstName: String,
     @Json(name = "last_name")
     val lastName: String,
-    val profile: String,
+    val profile: String?,
     @Json(name = "post_date")
     val postDate: String
 )
