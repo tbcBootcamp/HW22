@@ -12,7 +12,8 @@ import com.example.hw22.presentation.base.loadImage
 import com.example.hw22.presentation.model.Image
 import com.example.hw22.presentation.model.PostUiModel
 
-class PostsRecyclerViewAdapter: ListAdapter<PostUiModel, PostsRecyclerViewAdapter.PostsViewHolder>(PostsDiffCallback) {
+class PostsRecyclerViewAdapter(private val onClick: ((PostUiModel) -> Unit)?): ListAdapter<PostUiModel, PostsRecyclerViewAdapter.PostsViewHolder>(PostsDiffCallback) {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostsViewHolder {
         return PostsViewHolder(PostRecyclerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -46,6 +47,9 @@ class PostsRecyclerViewAdapter: ListAdapter<PostUiModel, PostsRecyclerViewAdapte
                 tvMessages.text = "${post.comments} Comments"
                 tvLikes.text = "${post.likes} Likes"
 
+                binding.root.setOnClickListener {
+                    onClick?.invoke(post)
+                }
             }
         }
     }

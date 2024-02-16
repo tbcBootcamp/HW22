@@ -13,3 +13,12 @@ fun <T, DomainType> Flow<Resource<List<T>>>.mapListToDomain(mapper: (T) -> Domai
         }
     }
 }
+fun <T, DomainType> Flow<Resource<T>>.mapToDomain(mapper: (T) -> DomainType): Flow<Resource<DomainType>> {
+    return this.map { resource ->
+        when (resource) {
+            is Resource.Success -> Resource.Success(mapper(resource.data))
+            is Resource.Loading -> Resource.Loading(resource.loading)
+            is Resource.Error -> Resource.Error(resource.error)
+        }
+    }
+}

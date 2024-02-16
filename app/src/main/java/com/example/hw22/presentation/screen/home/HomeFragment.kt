@@ -4,6 +4,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hw22.databinding.FragmentHomeBinding
@@ -17,7 +18,9 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
-    private val postsRecyclerAdapter = PostsRecyclerViewAdapter()
+    private val postsRecyclerAdapter = PostsRecyclerViewAdapter{
+        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailsFragment(it.id))
+    }
     private val storiesRecyclerAdapter = StoriesRecyclerViewAdapter()
     private val viewModel: HomeViewModel by viewModels()
 
