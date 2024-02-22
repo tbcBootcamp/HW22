@@ -7,4 +7,5 @@ data class HomeState (
     val isLoading: Boolean = false,
     val posts: List<PostUiModel>? = null,
     val stories: List<StoryUiModel>? = null,
+    val error: String? = null
 )

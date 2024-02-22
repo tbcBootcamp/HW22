@@ -7,16 +7,24 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.hw22.R
 import com.example.hw22.databinding.PostRecyclerItemBinding
 import com.example.hw22.presentation.base.loadImage
 import com.example.hw22.presentation.model.Image
 import com.example.hw22.presentation.model.PostUiModel
 
-class PostsRecyclerViewAdapter(private val onClick: ((PostUiModel) -> Unit)?): ListAdapter<PostUiModel, PostsRecyclerViewAdapter.PostsViewHolder>(PostsDiffCallback) {
+class PostsRecyclerViewAdapter(private val onClick: ((PostUiModel) -> Unit)?) :
+    ListAdapter<PostUiModel, PostsRecyclerViewAdapter.PostsViewHolder>(PostsDiffCallback) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostsViewHolder {
-        return PostsViewHolder(PostRecyclerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return PostsViewHolder(
+            PostRecyclerItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: PostsViewHolder, position: Int) {
@@ -30,7 +38,11 @@ class PostsRecyclerViewAdapter(private val onClick: ((PostUiModel) -> Unit)?): L
             val post = currentList[adapterPosition]
             with(binding) {
                 post.owner.profile?.let {
-                    shapeableImageViewProfile.loadImage(it)
+                    if (it.isNotEmpty()) {
+                        shapeableImageViewProfile.loadImage(it)
+                    } else {
+                        shapeableImageViewProfile.setImageResource(R.drawable.ic_person)
+                    }
                 }
 
                 tvFullName.text = post.owner.firstName + " " + post.owner.lastName
@@ -42,7 +54,8 @@ class PostsRecyclerViewAdapter(private val onClick: ((PostUiModel) -> Unit)?): L
                         submitList(it.map { Image(post.id, it) })
                     }
                 }
-                recyclerViewImages.layoutManager = StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
+                recyclerViewImages.layoutManager =
+                    StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
 
                 tvMessages.text = "${post.comments} Comments"
                 tvLikes.text = "${post.likes} Likes"

@@ -1,5 +1,7 @@
 package com.example.hw22.presentation.screen.home
 
+import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -9,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hw22.databinding.FragmentHomeBinding
 import com.example.hw22.presentation.base.BaseFragment
+import com.example.hw22.presentation.event.HomeFragmentEvents
 import com.example.hw22.presentation.screen.home.adapter.PostsRecyclerViewAdapter
 import com.example.hw22.presentation.screen.home.adapter.StoriesRecyclerViewAdapter
 import com.example.hw22.presentation.state.HomeState
@@ -34,6 +37,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
             adapter = storiesRecyclerAdapter
         }
+        viewModel.onEvent(HomeFragmentEvents.GetStories)
+        viewModel.onEvent(HomeFragmentEvents.GetPosts)
     }
 
     override fun observers() {
@@ -55,7 +60,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             stories?.let {
                 storiesRecyclerAdapter.submitList(it)
             }
+            state.error?.let {
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                viewModel.onEvent(HomeFragmentEvents.ResetError)
+            }
 
+            binding.progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
         }
     }
 }
